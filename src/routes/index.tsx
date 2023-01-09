@@ -6,6 +6,9 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+Icon.loadFont();
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,9 +29,28 @@ const SettingsStack = () => {
   );
 };
 
+const routeIcons = {
+  Home: 'home',
+  Settings: 'settings',
+};
+
 const AppTabs = () => {
   return (
-    <Tab.Navigator screenOptions={{headerShown: false}}>
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+        headerShown: false,
+        tabBarIcon: ({size, color}) => {
+          return (
+            <Icon
+              name={routeIcons[route.name as keyof typeof routeIcons] || ''}
+              size={size}
+              color={color}
+            />
+          );
+        },
+      })}>
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Settings" component={SettingsStack} />
     </Tab.Navigator>
